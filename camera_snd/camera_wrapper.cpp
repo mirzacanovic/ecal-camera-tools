@@ -1,0 +1,154 @@
+#include <iostream>
+#include <string>
+#include <thread>
+
+#include <QCameraInfo>
+#include <QtWidgets>
+
+#include "camera_wrapper.h"
+
+CameraWrapper::CameraWrapper(eCAL::protobuf::CPublisher<foxglove::CompressedImage>& publisher, std::string& cameraName, uint16_t width, uint16_t height, uint16_t maxFps) :
+  publisher_(publisher), cameraName_(cameraName), width_(width), height_(height), photosTaken_(0), lastFrameTimestamp(QDateTime::currentMSecsSinceEpoch())
+{
+  if (maxFps > 0)
+  {
+    frameIntervalInMs = 1000 / maxFps;
+  }
+  const QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
+  if (cameras.isEmpty())
+  {
+    std::cerr << "No available camera to use" << std::endl;
+    return;
+  }
+  
+  qDebug() << "Available cameras: ";
+
+  for (const QCameraInfo &cameraInfo : cameras) {
+
+      qDebug() << "  " << cameraInfo.deviceName();
+      if (cameraInfo.deviceName().toStdString() == cameraName_)
+      {
+        setCamera(cameraInfo);
+        return;
+      }
+  }
+
+  std::cout << "Selected camera not found, setting to default camera." << std::endl;
+  setCamera(QCameraInfo::defaultCamera());
+}
+
+CameraWrapper::~CameraWrapper()
+{
+}
+
+void CameraWrapper::setCamera(const QCameraInfo& cameraInfo)
+{
+  camera_.reset(new QCamera(cameraInfo));
+  camera_.data()->setCaptureMode(QCamera::CaptureStillImage);
+  camera_.data()->load();
+
+  imageCapture_.reset(new QCameraImageCapture(camera_.data()));
+  imageCapture_.data()->setCaptureDestination(QCameraImageCapture::CaptureToBuffer);
+
+  qDebug() << "Supported codecs: ";
+  for (const auto& codec : imageCapture_.data()->supportedImageCodecs())
+  {
+    qDebug() << "  " << codec;
+  }
+
+  qDebug() << "Supported buffer formats: ";
+
+  for (const auto& bufferFormat : imageCapture_.data()->supportedBufferFormats())
+  {
+    qDebug() << "  " << bufferFormat;
+  }
+
+  if (isGivenResolutionSupported())
+  {
+    QImageEncoderSettings imageSettings;
+    imageSettings.setCodec("image/jpg");
+    imageSettings.setResolution(width_, height_);
+    imageCapture_.data()->setEncodingSettings(imageSettings);
+  }
+  else
+  {
+    std::cout << "Given resolution is not supported from the camera, setting default resolution. List of supported resolutions: ";
+    auto resolutions = imageCapture_.data()->supportedResolutions();
+    for (const auto& it : resolutions)
+    {
+      std::cout << it.width() << "x" << it.height() << ", ";
+    }
+    std::cout << std::endl;
+  }
+
+  // connect
+  QObject::connect(imageCapture_.data(), &QCameraImageCapture::imageCaptured, [=] (int id, QImage img){
+    ++photosTaken_;
+    QByteArray buf;
+    QBuffer buffer(&buf);
+    buffer.open(QIODevice::WriteOnly);
+    img.save(&buffer, "JPG");
+    std::string protoData(buf.constData(), buf.length());
+    buffer.close();
+
+    // create and send protobuf
+    foxglove::CompressedImage compressedImageProto;
+    compressedImageProto.set_data(protoData);
+    compressedImageProto.set_format("jpg");
+    publisher_.Send(compressedImageProto);
+
+    std::cout << "Sent photo number: " << photosTaken_ << " with size: " << compressedImageProto.ByteSizeLong() << std::endl;
+
+    emit photoSentSignal();
+  });
+
+  QObject::connect(imageCapture_.data(), &QCameraImageCapture::readyForCaptureChanged, [=] (bool state) {
+     if(state == true) {
+      capture();
+     }
+  });
+
+  QObject::connect(this, &CameraWrapper::photoSentSignal, [this](){
+    if (isReadyForCapture())
+    {
+      capture();
+    }
+  });
+
+  for (const auto& frameRateRange : camera_.data()->supportedViewfinderFrameRateRanges())
+  {
+    qDebug() << frameRateRange.minimumFrameRate << ", " << frameRateRange.maximumFrameRate;
+  }
+
+  camera_.data()->start();
+}
+
+void CameraWrapper::capture()
+{
+  qint64 currentTime = QDateTime::currentMSecsSinceEpoch();
+  std::cout << "Time: " << currentTime << std::endl;
+  // limit the number of photos captured
+  qint64 sleepingTime = currentTime-lastFrameTimestamp < frameIntervalInMs ? frameIntervalInMs-(currentTime-lastFrameTimestamp) : 0;
+
+  std::this_thread::sleep_for(std::chrono::milliseconds(sleepingTime));
+
+  camera_.data()->searchAndLock();
+  imageCapture_.data()->capture();
+  camera_.data()->unlock();
+
+  lastFrameTimestamp = QDateTime::currentMSecsSinceEpoch();
+}
+
+bool CameraWrapper::isGivenResolutionSupported()
+{
+  QList<QSize> resolutions = imageCapture_.data()->supportedResolutions();
+  QSize givenResolution(width_, height_);
+
+  return resolutions.contains(givenResolution);
+}
+
+bool CameraWrapper::isReadyForCapture()
+{
+  return imageCapture_.data()->isReadyForCapture();
+}
+
