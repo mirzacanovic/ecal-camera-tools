@@ -53,9 +53,9 @@ add_mon_plugin(${PROJECT_NAME}
 )
 
 set(protobuf_files
-    ${CMAKE_CURRENT_SOURCE_DIR}/proto_messages/compressed_image.proto
+    ${CMAKE_SOURCE_DIR}/proto_messages/compressed_image.proto
 )
-PROTOBUF_TARGET_CPP(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/proto_messages/ ${protobuf_files})
+PROTOBUF_TARGET_CPP(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/proto_messages/ ${protobuf_files})
 
 
 create_targets_protobuf()

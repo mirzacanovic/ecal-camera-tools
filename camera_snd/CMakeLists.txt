@@ -21,12 +21,12 @@ set(source_files
 )
 
 set(protobuf_files
-    ${CMAKE_CURRENT_SOURCE_DIR}/proto_messages/compressed_image.proto
+    ${CMAKE_SOURCE_DIR}/proto_messages/compressed_image.proto
 )
 
 add_executable(${PROJECT_NAME} ${source_files})
 
-PROTOBUF_TARGET_CPP(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/proto_messages/ ${protobuf_files})
+PROTOBUF_TARGET_CPP(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/proto_messages/ ${protobuf_files})
 
 target_link_libraries(${PROJECT_NAME}
   eCAL::core
