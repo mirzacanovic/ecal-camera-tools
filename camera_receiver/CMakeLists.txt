@@ -74,11 +74,6 @@ if (TARGET mon)
 add_dependencies(mon ${PROJECT_NAME})
 endif()
 
-message("CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
-message("CMAKE_RUNTIME_OUTPUT_DIRECTORY: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
-message("ECAL_MON_PLUGIN_DIR: ${ECAL_MON_PLUGIN_DIR}")
-message("eCAL_install_bin_dir: ${eCAL_install_bin_dir}")
-
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY CMAKE_BINARY_DIR/lib)
 set(ECAL_MON_PLUGIN_DIR ecalmon_plugins)
 

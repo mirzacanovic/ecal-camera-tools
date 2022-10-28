@@ -9,6 +9,7 @@
 
 #include "compressed_image.pb.h"
 #include "camera_wrapper.h"
+#include "camera_wrapper_with_fps_control.h"
 
 int main(int argc, char **argv)
 {
@@ -17,6 +18,8 @@ int main(int argc, char **argv)
   uint16_t width = 0;
   uint16_t height = 0;
   uint16_t maxFps = 0;
+
+  std::shared_ptr<CameraWrapper> camera;
 
   if (argc < 3)
   {
@@ -46,7 +49,14 @@ int main(int argc, char **argv)
   eCAL::Initialize(argc, argv, "Image Sender");
   eCAL::protobuf::CPublisher<foxglove::CompressedImage> publisher(topicName);
 
-  CameraWrapper camera(publisher, cameraName, width, height, maxFps);
+  if (maxFps > 0)
+  {
+    camera = std::make_shared<CameraWrapperWithFpsControl>(publisher, cameraName, width, height, maxFps);
+  }
+  else
+  {
+    camera = std::make_shared<CameraWrapper>(publisher, cameraName, width, height);
+  }
 
   return app.exec();
 }

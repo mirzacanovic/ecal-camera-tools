@@ -7,13 +7,9 @@
 
 #include "camera_wrapper.h"
 
-CameraWrapper::CameraWrapper(eCAL::protobuf::CPublisher<foxglove::CompressedImage>& publisher, std::string& cameraName, uint16_t width, uint16_t height, uint16_t maxFps) :
-  publisher_(publisher), cameraName_(cameraName), width_(width), height_(height), photosTaken_(0), lastFrameTimestamp(QDateTime::currentMSecsSinceEpoch())
+CameraWrapper::CameraWrapper(eCAL::protobuf::CPublisher<foxglove::CompressedImage>& publisher, std::string& cameraName, uint16_t width, uint16_t height) :
+  publisher_(publisher), cameraName_(cameraName), width_(width), height_(height), photosTaken_(0)
 {
-  if (maxFps > 0)
-  {
-    frameIntervalInMs = 1000 / maxFps;
-  }
   const QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
   if (cameras.isEmpty())
   {
@@ -125,18 +121,9 @@ void CameraWrapper::setCamera(const QCameraInfo& cameraInfo)
 
 void CameraWrapper::capture()
 {
-  qint64 currentTime = QDateTime::currentMSecsSinceEpoch();
-  std::cout << "Time: " << currentTime << std::endl;
-  // limit the number of photos captured
-  qint64 sleepingTime = currentTime-lastFrameTimestamp < frameIntervalInMs ? frameIntervalInMs-(currentTime-lastFrameTimestamp) : 0;
-
-  std::this_thread::sleep_for(std::chrono::milliseconds(sleepingTime));
-
   camera_.data()->searchAndLock();
   imageCapture_.data()->capture();
   camera_.data()->unlock();
-
-  lastFrameTimestamp = QDateTime::currentMSecsSinceEpoch();
 }
 
 bool CameraWrapper::isGivenResolutionSupported()

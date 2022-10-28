@@ -16,6 +16,8 @@ set(source_files
   main.cpp
   camera_wrapper.h
   camera_wrapper.cpp
+  camera_wrapper_with_fps_control.h
+  camera_wrapper_with_fps_control.cpp
 )
 
 set(protobuf_files

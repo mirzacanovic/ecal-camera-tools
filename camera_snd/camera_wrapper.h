@@ -13,14 +13,16 @@ class CameraWrapper : public QObject
 {
   Q_OBJECT
 public:
-  CameraWrapper(eCAL::protobuf::CPublisher<foxglove::CompressedImage>& publisher, std::string& camera_name, uint16_t width, uint16_t height, uint16_t maxFps);
+  CameraWrapper(eCAL::protobuf::CPublisher<foxglove::CompressedImage>& publisher, std::string& camera_name, uint16_t width, uint16_t height);
   ~CameraWrapper();
   bool isReadyForCapture();
+
+protected:
+  virtual void capture();
 
 private slots:
   void setCamera(const QCameraInfo& cameraInfo);
 private:
-  void capture();
   bool isGivenResolutionSupported();
   std::string supportedResolutionsList();
 
@@ -34,8 +36,6 @@ private:
   uint16_t height_;
   size_t photosTaken_;
 
-  qint64 frameIntervalInMs = 0;
-  qint64 lastFrameTimestamp;
 
 signals:
   void photoSentSignal();
