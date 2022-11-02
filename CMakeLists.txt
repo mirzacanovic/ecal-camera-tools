@@ -123,4 +123,4 @@ endif()
 
 
 add_subdirectory(camera_snd)
-add_subdirectory(camera_receiver)
+add_subdirectory(camera_receiver_mon_plugin)
