@@ -13,6 +13,20 @@
 
 int main(int argc, char **argv)
 {
+  if(argc == 2 && strcmp(argv[1], "--help")==0)
+  {
+    std::cout << "eCAL Camera Sender \n\n";
+    std::cout << "Example usage: ./camera_snd compressed_image_protobuf /dev/video0 640 480 10 \n\n";
+    std::cout << "Command Line Arguments: \n\n";
+    std::cout << "Topic: To be able to read the image with the eCAL monitor plugin, set this to \"compressed_image_protobuf\". \n";
+    std::cout << "Camera: Path to camera. \n";
+    std::cout << "Width: Image width (optional) \n";
+    std::cout << "Height: Image height (optional) \n";
+    std::cout << "Framerate: Maximal framerate (optional)\n";
+    
+    return 0;
+  }
+
   std::string cameraName;
   std::string topicName;
   uint16_t width = 0;

@@ -46,19 +46,6 @@ void CameraWrapper::setCamera(const QCameraInfo& cameraInfo)
   imageCapture_.reset(new QCameraImageCapture(camera_.data()));
   imageCapture_.data()->setCaptureDestination(QCameraImageCapture::CaptureToBuffer);
 
-  qDebug() << "Supported codecs: ";
-  for (const auto& codec : imageCapture_.data()->supportedImageCodecs())
-  {
-    qDebug() << "  " << codec;
-  }
-
-  qDebug() << "Supported buffer formats: ";
-
-  for (const auto& bufferFormat : imageCapture_.data()->supportedBufferFormats())
-  {
-    qDebug() << "  " << bufferFormat;
-  }
-
   if (isGivenResolutionSupported())
   {
     QImageEncoderSettings imageSettings;
