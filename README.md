@@ -1,1 +1,1 @@
-# ecal_camera_tools
+# ecal-camera-tools
