@@ -15,7 +15,7 @@ endfunction()
 function(install_mon_plugin TARGET_NAME)
   	install(TARGETS ${TARGET_NAME}
     		RUNTIME DESTINATION  "${eCAL_install_bin_dir}/${ECAL_MON_PLUGIN_DIR}" COMPONENT app
-    		LIBRARY DESTINATION  $<IF:$<BOOL:${WIN32}>,${eCAL_install_bin_dir}/${ECAL_MON_PLUGIN_DIR},${eCAL_install_lib_dir}/${ECAL_MON_PLUGIN_DIR}> COMPONENT app
+    		LIBRARY DESTINATION  $<IF:$<BOOL:${WIN32}>,${eCAL_install_bin_dir}/${ECAL_MON_PLUGIN_DIR},local/${eCAL_install_lib_dir}/${ECAL_MON_PLUGIN_DIR}> COMPONENT app
 		ARCHIVE DESTINATION  lib COMPONENT app
   		)
 endfunction()

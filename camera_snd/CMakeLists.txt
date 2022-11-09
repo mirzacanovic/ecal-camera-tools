@@ -34,3 +34,7 @@ target_link_libraries(${PROJECT_NAME}
   Qt5::Widgets
   Qt5::MultimediaWidgets
 )
+
+install(TARGETS ${PROJECT_NAME}
+  RUNTIME DESTINATION  ${CMAKE_INSTALL_PREFIX}/bin COMPONENT app
+)
