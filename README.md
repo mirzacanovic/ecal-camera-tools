@@ -11,3 +11,6 @@ Besides *eCAL 5*, the following packages need to be installed:
 * qtwayland5
 * protobuf-compiler
 
+## eCAL Monitor Plugin
+
+After running cmake --install on the monitor plugin, you can view the published camera image in the eCAL Monitor GUI in the detailed view under the Camera Receiver tab. If you don't see anything, please make sure you published under the topic name "compressed_image_protobuf".
