@@ -15,4 +15,4 @@ jobs:
       run: |
           sudo add-apt-repository ppa:ecal/ecal-latest
           sudo apt-get update
-          sudo apt-get install ecal
+          sudo apt-get install ecal qtmultimedia5-dev libqt5multimedia5-plugins qtwayland5 protobuf-compiler
