@@ -15,7 +15,7 @@ jobs:
       run: |
           sudo add-apt-repository ppa:ecal/ecal-latest
           sudo apt-get update
-          sudo apt-get install ecal qtmultimedia5-dev libqt5multimedia5-plugins qtwayland5 protobuf-compiler
+          sudo apt-get install ecal qtmultimedia5-dev libqt5multimedia5-plugins qtwayland5 libprotoc-dev protobuf-compiler libhdf5-dev
 
     - name: Checkout
       uses: actions/checkout@v3
@@ -29,7 +29,6 @@ jobs:
         export CXX=/usr/bin/g++-11
         mkdir "${{ runner.workspace }}/_build"
         cd "${{ runner.workspace }}/_build"
-        ls "${{ runner.workspace }}/ecal-camera-tools"
         cmake "${{ runner.workspace }}/ecal-camera-tools"
       shell: bash
 
