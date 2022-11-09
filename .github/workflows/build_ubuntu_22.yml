@@ -16,3 +16,7 @@ jobs:
           sudo add-apt-repository ppa:ecal/ecal-latest
           sudo apt-get update
           sudo apt-get install ecal qtmultimedia5-dev libqt5multimedia5-plugins qtwayland5 protobuf-compiler
+
+    - name: Build Release
+      run: cmake --build . --config Release
+      working-directory: ${{ runner.workspace }}/_build
