@@ -10,6 +10,8 @@ Besides *eCAL 5*, the following packages need to be installed:
 * libqt5multimedia5-plugins
 * qtwayland5
 * protobuf-compiler
+* libprotoc-dev
+* libhdf5-dev
 
 ## eCAL Camera Sender
 
