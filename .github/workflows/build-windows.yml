@@ -47,7 +47,9 @@ jobs:
       shell: cmd
       
     - name: Build
-      run: cmake --build . --config Release
+      run: |
+        cmake --build . --config Release
+        windeployqt --qmldir ${{ runner.workspace }}\_build --libdir ${{ runner.workspace }}\_deploy\bin  --plugindir ${{ runner.workspace }}\_deploy\bin ${{ runner.workspace }}\_build\camera_snd\Release\camera_snd.exe --pdb --release --compiler-runtime
       working-directory: ${{ runner.workspace }}\_build
       
     - name: Install
