@@ -47,17 +47,20 @@ jobs:
       shell: cmd
       
     - name: Build
-      run: |
-        cmake --build . --config Release
-        windeployqt --qmldir ${{ runner.workspace }}\_build --libdir ${{ runner.workspace }}\_deploy\bin  --plugindir ${{ runner.workspace }}\_deploy\bin ${{ runner.workspace }}\_build\camera_snd\Release\camera_snd.exe --pdb --release --compiler-runtime
+      run: cmake --build . --config Release
       working-directory: ${{ runner.workspace }}\_build
       
     - name: Install
       run: cmake --build . --config Release --target install
       working-directory: ${{ runner.workspace }}\_build
       
-    - name: Deploy
+    - name: Deploy Qt
+      run: windeployqt --qmldir ${{ runner.workspace }}\_build --libdir ${{ runner.workspace }}\_deploy\bin  --plugindir ${{ runner.workspace }}\_deploy\bin ${{ runner.workspace }}\_build\camera_snd\Release\camera_snd.exe --pdb --release --compiler-runtime
+      working-directory: ${{ runner.workspace }}\_build
+
+
+    - name: Upload Artifact
       uses: actions/upload-artifact@v3
       with:
         name: windows-artefacts
-        path: ${{ runner.workspace }}\_deploy\
+        path: ${{ runner.workspace }}\_deploy\bin
