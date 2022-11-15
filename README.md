@@ -20,7 +20,7 @@ This application captures the stream from a specified camera and publishes it vi
 Example usage: ./camera_snd compressed_image_protobuf /dev/video0 640 480 10
 
 Command Line Arguments:
-* Topic: To be able to read the image with the eCAL monitor plugin, set this to "compressed_image_protobuf"
+* Topic: Name of the topic.
 * Camera: Path to camera. Usually, this is "/dev/video0" unless there are multiple cameras
 * Width: Image width (optional)
 * Height: Image height (optional)
@@ -28,4 +28,4 @@ Command Line Arguments:
 
 ## eCAL Monitor Plugin
 
-After running cmake --install on the monitor plugin, you can view the published camera image in the eCAL Monitor GUI in the detailed view under the Camera Receiver tab. If you don't see anything, please make sure you published under the topic name "compressed_image_protobuf".
+After running cmake --install on the monitor plugin, you can view the published camera image in the eCAL Monitor GUI in the detailed view under the Camera Receiver tab.

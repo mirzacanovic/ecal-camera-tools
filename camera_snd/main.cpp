@@ -36,8 +36,7 @@ int main(int argc, char **argv) {
     std::cout << "Example usage: ./camera_snd compressed_image_protobuf "
                  "/dev/video0 640 480 10 \n\n";
     std::cout << "Command Line Arguments: \n\n";
-    std::cout << "Topic: To be able to read the image with the eCAL monitor "
-                 "plugin, set this to \"compressed_image_protobuf\". \n";
+    std::cout << "Topic: Name of the topic";
     std::cout << "Camera: Path to camera. \n";
     std::cout << "Width: Image width (optional) \n";
     std::cout << "Height: Image height (optional) \n";
