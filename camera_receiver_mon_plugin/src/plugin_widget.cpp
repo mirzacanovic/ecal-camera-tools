@@ -25,7 +25,7 @@
 
 PluginWidget::PluginWidget(const QString& topic_name, const QString& topic_type, QWidget* parent):
   QWidget(parent),
-  compressed_image_subscriber_("compressed_image_protobuf"),
+  compressed_image_subscriber_(topic_name.toStdString()),
   last_received_photo_(nullptr),
   last_message_publish_timestamp_(eCAL::Time::ecal_clock::time_point(eCAL::Time::ecal_clock::duration(-1))),
   topic_name_(topic_name),
