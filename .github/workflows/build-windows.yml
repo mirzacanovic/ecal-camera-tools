@@ -51,13 +51,11 @@ jobs:
       working-directory: ${{ runner.workspace }}\_build
       
     - name: Install
-      run: cmake --build . --config Release --target install
+      run: | 
+        cmake --build . --config Release --target install
+        echo "ls ${{ runner.workspace }}\_deploy\bin"
+        ls ${{ runner.workspace }}\_deploy\bin
       working-directory: ${{ runner.workspace }}\_build
-      
-    - name: Deploy Qt
-      run: windeployqt --qmldir ${{ runner.workspace }}\_build --libdir ${{ runner.workspace }}\_deploy\bin  --plugindir ${{ runner.workspace }}\_deploy\bin ${{ runner.workspace }}\_build\camera_snd\Release\camera_snd.exe --pdb --release --compiler-runtime
-      working-directory: ${{ runner.workspace }}\_build
-
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v3

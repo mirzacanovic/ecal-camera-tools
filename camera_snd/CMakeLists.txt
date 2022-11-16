@@ -53,6 +53,41 @@ target_link_libraries(${PROJECT_NAME}
   Qt5::MultimediaWidgets
 )
 
+if(WIN32)
+    # Deploy Qt DLLs in the binary folder. This is necessary for starting the application from whithin the IDE without having to copy QtCore.dll, QtWidgets.dll etc. by hand each time
+    qt_add_windeployqt_postbuild(--no-system-d3d-compiler --libdir ${CMAKE_SOURCE_DIR}/../_deploy/bin  --plugindir ${CMAKE_SOURCE_DIR}/../_deploy/bin --no-compiler-runtime --no-opengl-sw --pdb "$<TARGET_FILE:${PROJECT_NAME}>")
+endif()
+
 install(TARGETS ${PROJECT_NAME}
   RUNTIME DESTINATION  ${CMAKE_INSTALL_PREFIX}/bin COMPONENT app
 )
+
+if(WIN32)
+install(CODE
+    "
+    set(_file ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Release/ecal_play_gui.exe)
+    execute_process(
+            COMMAND \"${CMAKE_COMMAND}\" -E
+                env PATH=\"${_qt_bin_dir}\" \"${WINDEPLOYQT_EXECUTABLE}\"
+                    --dry-run
+                    --no-compiler-runtime
+                    --no-angle
+                    --no-opengl-sw
+                    --list mapping
+                    \${_file}
+            OUTPUT_VARIABLE _output
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+    separate_arguments(_files WINDOWS_COMMAND \${_output})
+    while(_files)
+            list(GET _files 0 _src)
+            list(GET _files 1 _dest)
+            execute_process(
+                COMMAND \"${CMAKE_COMMAND}\" -E
+                    copy \${_src} \"\${CMAKE_INSTALL_PREFIX}/bin/\${_dest}\"
+            )
+            list(REMOVE_AT _files 0 1)
+    endwhile()
+    "
+)
+endif()

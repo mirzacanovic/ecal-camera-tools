@@ -68,7 +68,7 @@ if (WIN32)
   set(VS_PLATFORM "v140_${PLATFORM_NAME}")
 endif()
 
-include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/mon_functions.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake_utils/mon_functions.cmake)
 
 # --------------------------------------------------------
 # command line build options
@@ -107,6 +107,11 @@ if(WIN32)
   endif()
 endif(WIN32)
 
+if(WIN32)
+    include(${CMAKE_CURRENT_LIST_DIR}/cmake_utils/qt/qt_windeployqt.cmake)
+endif()
+
+
 if(POLICY CMP0071)
   cmake_policy(SET CMP0071 NEW)
 endif()
@@ -115,7 +120,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC OFF) # Reason for being turned off: AutoUIC will prevent VS from detecting changes in .ui files
 set(CMAKE_AUTORCC OFF) # Reason for being turned off: AutoRCC will create an entirely new project in VS which clutters the solution appearance. Additionally, we cannot assign a source group to the generated .cpp files which will clutter the project.
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-find_package(CMakeFunctions REQUIRED)
 find_package(eCAL COMPONENTS core pb mon_plugin_lib  REQUIRED)
 find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
 find_package(Protobuf REQUIRED)
