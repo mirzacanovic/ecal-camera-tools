@@ -37,6 +37,8 @@ public:
   ~CameraWrapper();
   bool isReadyForCapture();
 
+  void printAvailableCameras();
+
 protected:
   virtual void capture();
 
