@@ -33,7 +33,9 @@ CameraWrapperWithFpsControl::~CameraWrapperWithFpsControl() {}
 
 void CameraWrapperWithFpsControl::capture() {
   qint64 currentTime = QDateTime::currentMSecsSinceEpoch();
+  #ifdef DEBUG
   std::cout << "Time: " << currentTime << std::endl;
+  #endif
   // limit the number of photos captured
   qint64 sleepingTime =
       currentTime - lastFrameTimestamp < frameIntervalInMs

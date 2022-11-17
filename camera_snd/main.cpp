@@ -33,7 +33,7 @@
 int main(int argc, char **argv) {
   if (argc == 2 && strcmp(argv[1], "--help") == 0) {
     std::cout << "eCAL Camera Sender \n\n";
-    std::cout << "Example usage: ./camera_snd compressed_image_protobuf "
+    std::cout << "Example usage: argv[0] compressed_image_protobuf "
                  "/dev/video0 640 480 10 \n\n";
     std::cout << "Command Line Arguments: \n\n";
     std::cout << "Topic: Name of the topic";
@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
   std::shared_ptr<CameraWrapper> camera;
 
   if (argc < 3) {
-    std::cerr << "Invalid parameters, usage: ./protobuf_snd [topicName] "
+    std::cerr << "Invalid parameters, usage: argv[0] [topicName] "
                  "[cameraName] [OPTIONAL_resolutionWidth] "
                  "[OPTIONAL_resolutionHeight] [OPTIONAL_maxFps]"
               << std::endl;

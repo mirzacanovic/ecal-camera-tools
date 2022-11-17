@@ -95,12 +95,11 @@ void CameraWrapper::setCamera(const QCameraInfo &cameraInfo) {
                      compressedImageProto.set_data(protoData);
                      compressedImageProto.set_format("jpg");
                      publisher_.Send(compressedImageProto);
-
+#ifdef DEBUG
                      std::cout << "Sent photo number: " << photosTaken_
                                << " with size: "
-                               << compressedImageProto.ByteSizeLong()
-                               << std::endl;
-
+                               << compressedImageProto.ByteSizeLong() << std::endl;
+#endif
                      emit photoSentSignal();
                    });
 
