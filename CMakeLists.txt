@@ -139,5 +139,5 @@ if(UNIX)
 endif()
 
 
-add_subdirectory(camera_snd)
+add_subdirectory(ecal_camera_snd)
 add_subdirectory(camera_receiver_mon_plugin)
