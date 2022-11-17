@@ -17,7 +17,7 @@
 # ========================= eCAL LICENSE =================================
 
 cmake_minimum_required(VERSION 3.4)
-project(ecal_camera_tools)
+project(ecal-camera-samples)
 
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY ${PROJECT_NAME})
