@@ -29,7 +29,7 @@ jobs:
         export CXX=/usr/bin/g++-11
         mkdir "${{ runner.workspace }}/_build"
         cd "${{ runner.workspace }}/_build"
-        cmake "${{ runner.workspace }}/ecal-camera-tools"
+        cmake -DCMAKE_INSTALL_LIBDIR=lib/x86_64-linux-gnu "${{ runner.workspace }}/ecal-camera-tools"
       shell: bash
 
     - name: Build Release

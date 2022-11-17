@@ -28,6 +28,7 @@ set(CPACK_PACKAGE_VERSION_PATCH 0)
 set(CPACK_PACKAGE_INSTALL_DIRECTORY ${PROJECT_NAME})
 set(CPACK_PACKAGE_CONTACT "mirza.canovic@gmail.com")
 set(CPACK_OUTPUT_FILE_PREFIX _deploy)
+
 include(CPack)
 
 add_definitions(-DQWT_DLL)
