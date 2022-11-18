@@ -29,6 +29,8 @@ set(CPACK_PACKAGE_INSTALL_DIRECTORY ${PROJECT_NAME})
 set(CPACK_PACKAGE_CONTACT "mirza.canovic@gmail.com")
 set(CPACK_OUTPUT_FILE_PREFIX _deploy)
 
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "ecal, qtmultimedia5-dev, libqt5multimedia5-plugins, qtwayland5, libprotoc-dev, protobuf-compiler, libhdf5-dev")
+
 include(CPack)
 
 add_definitions(-DQWT_DLL)
