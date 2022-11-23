@@ -11,7 +11,6 @@ jobs:
 
     strategy:
       matrix:
-        library_type: [static, shared]
         os: [ubuntu-22.04, ubuntu-20.04]
 
     runs-on: ${{ matrix.os }}
@@ -47,9 +46,15 @@ jobs:
       run: |
         export CC=${{ env.CC_PATH }}
         export CXX=${{ env.CXX_PATH }}
+
         mkdir "${{ runner.workspace }}/_build"
         cd "${{ runner.workspace }}/_build"
-        cmake -DCMAKE_INSTALL_LIBDIR=lib/x86_64-linux-gnu "${{ runner.workspace }}/ecal-camera-tools"
+
+        cmake -B ${{github.workspace}}/_build \
+              -DCMAKE_BUILD_TYPE=Release \
+              -DCMAKE_INSTALL_LIBDIR=lib/x86_64-linux-gnu \
+              "${{ github.workspace }}"
+
       shell: bash
 
     - name: Build Release
