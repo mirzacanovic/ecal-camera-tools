@@ -46,9 +46,6 @@ cmake_policy(SET CMP0057 NEW)
 cmake_policy(SET CMP0054 NEW)
 cmake_policy(SET CMP0080 NEW)
 
-option(ECAL_MON_PLUGINS_DEPLOY_RUNTIME  "deploy runtime libraries with monitor plugins"  ON)
-option(ECAL_MON_PLUGINS_EXCLUDE_SIGNALS_PLOTTING_PLUGIN "do not build signals plotting plugin (useful for ecal >=5.10.x, since it's already included by default)" OFF)
-
 # --------------------------------------------------------
 # set ECAL_MON_PLUGIN_DIR install dir
 # --------------------------------------------------------
