@@ -19,7 +19,7 @@ jobs:
         
     - name: Extract eCAL Version
       run: |
-        echo "ECAL_VERSION=$(ls D:\\a\\ecal-camera-tools\\ecal-camera-tools | sed 's@^[^0-9]*\([0-9.]\+\).*@\1@' | cut -d"." -f-2)" >> "$GITHUB_ENV"
+        echo "ECAL_VERSION=$(ls ${{ runner.workspace }} | sed 's@^[^0-9]*\([0-9.]\+\).*@\1@' | cut -d"." -f-2)" >> "$GITHUB_ENV"
       shell: bash
 
     - name: Install eCAL
