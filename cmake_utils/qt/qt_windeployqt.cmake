@@ -1,4 +1,4 @@
-# ========================= eCAL LICENSE =================================
+# ========================= LICENSE =================================
 #
 # Copyright (C) 2016 - 2019 Continental Corporation
 #
@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# ========================= eCAL LICENSE =================================
+# ========================= LICENSE =================================
 
 
 set (qt_windeployqt_cmake_path ${CMAKE_CURRENT_LIST_DIR})

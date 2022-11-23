@@ -1,4 +1,4 @@
-name: Build Ubuntu 22.04
+name: Ubuntu
 
 on:
   push:
@@ -8,9 +8,28 @@ on:
 
 jobs:
   build-ubuntu:
-    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, ubuntu-20.04]
+
+    runs-on: ${{ matrix.os }}
 
     steps:
+
+    - name: Set Variables
+      run: |
+        if [[ '${{ matrix.os }}' == 'ubuntu-22.04' ]]; then
+          echo "CC_PATH=/usr/bin/gcc-11"   >> "$GITHUB_ENV"
+          echo "CXX_PATH=/usr/bin/g++-11"  >> "$GITHUB_ENV"
+        elif [[ '${{ matrix.os }}' == 'ubuntu-20.04' ]]; then
+          echo "CC_PATH=/usr/bin/gcc-9"    >> "$GITHUB_ENV"
+          echo "CXX_PATH=/usr/bin/g++-9"   >> "$GITHUB_ENV"
+        else
+          echo "CC_PATH=/usr/bin/gcc"    >> "$GITHUB_ENV"
+          echo "CXX_PATH=/usr/bin/g++"   >> "$GITHUB_ENV"
+        fi
+
     - name: Install Dependencies
       run: |
           sudo add-apt-repository ppa:ecal/ecal-latest
@@ -25,11 +44,15 @@ jobs:
 
     - name: CMake
       run: |
-        export CC=/usr/bin/gcc-11
-        export CXX=/usr/bin/g++-11
+        export CC=${{ env.CC_PATH }}
+        export CXX=${{ env.CXX_PATH }}
+
         mkdir "${{ runner.workspace }}/_build"
         cd "${{ runner.workspace }}/_build"
-        cmake -DCMAKE_INSTALL_LIBDIR=lib/x86_64-linux-gnu "${{ runner.workspace }}/ecal-camera-tools"
+        cmake -DCMAKE_BUILD_TYPE=Release \
+              -DCMAKE_INSTALL_LIBDIR=lib/x86_64-linux-gnu \
+              "${{ github.workspace }}"
+
       shell: bash
 
     - name: Build Release
@@ -55,7 +78,7 @@ jobs:
 
     - name: Rename .deb installer
       run: |
-        mv *.deb "${{env.cmake_project_name}}-ubuntu22.04-ecal-${{env.ecal_version}}.deb"
+        mv *.deb "${{env.cmake_project_name}}-${{ matrix.os }}-ecal-${{env.ecal_version}}.deb"
       shell: bash
       working-directory: ${{runner.workspace}}/_build/_deploy/
 
@@ -63,5 +86,5 @@ jobs:
     - name: Upload Debian
       uses: actions/upload-artifact@v3
       with:
-        name: ubuntu-debian
+        name: ${{env.cmake_project_name}}-${{ matrix.os }}-ecal-${{env.ecal_version}}
         path: ${{ runner.workspace }}/_build/_deploy/*.deb

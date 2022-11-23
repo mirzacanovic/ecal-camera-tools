@@ -1,4 +1,4 @@
-# ========================= eCAL LICENSE =================================
+# ========================= LICENSE =================================
 #
 # Copyright (C) 2022 Continental Corporation
 #
@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# ========================= eCAL LICENSE =================================
+# ========================= LICENSE =================================
 
 cmake_minimum_required(VERSION 3.0)
 set(CMAKE_FIND_PACKAGE_PREFER_CONFIG ON)
