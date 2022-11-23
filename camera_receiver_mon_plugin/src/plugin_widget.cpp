@@ -1,4 +1,4 @@
-/* ========================= eCAL LICENSE =================================
+/* ========================= LICENSE =================================
 *
 * Copyright (C) 2022 Continental Corporation
 *
@@ -14,7 +14,7 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 *
-* ========================= eCAL LICENSE =================================
+* ========================= LICENSE =================================
 */
 
 #include "plugin_widget.h"
