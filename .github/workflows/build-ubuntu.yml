@@ -49,9 +49,7 @@ jobs:
 
         mkdir "${{ runner.workspace }}/_build"
         cd "${{ runner.workspace }}/_build"
-
-        cmake -B ${{github.workspace}}/_build \
-              -DCMAKE_BUILD_TYPE=Release \
+        cmake -DCMAKE_BUILD_TYPE=Release \
               -DCMAKE_INSTALL_LIBDIR=lib/x86_64-linux-gnu \
               "${{ github.workspace }}"
 
